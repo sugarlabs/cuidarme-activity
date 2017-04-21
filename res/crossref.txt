@@ -1,0 +1,28 @@
+'    ____                  ____             ____
+'   / __/_ _____  ___ ____/ __/__________  / / /
+'  _\ \/ // / _ \/ -_) __/\ \/ __/ __/ _ \/ / / 
+' /___/\_,_/ .__/\__/_/ /___/\__/_/  \___/_/_/  
+'         /_/                  game engine
+'
+' Cross-reference for tiles and sprites.
+'
+' Syntax for each line is:
+'      [number] [tilename] [tile description]
+' Ex.  5130 wirecornerul upper-left corner of wire path
+'
+' Tile numbers may go from 1-32767. (Tile 0 is empty space.)
+' Tiles 9000-9999 are invisible during gameplay.
+'
+' Commands:
+'      # tiles              < tile declarations start here
+'      # sprites            < sprite descriptions start here
+' __________________________________________________________
+
+# tiles
+
+1 wall pared
+2 star pellet
+3 star2 powerup
+
+# sprites
+
