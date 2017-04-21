@@ -23,6 +23,12 @@
 1 wall pared
 2 star pellet
 3 star2 powerup
+11 prop1
+12 prop2
+13 prop3
+14 prop4
+15 prop5
+16 prop6
 
 # sprites
 

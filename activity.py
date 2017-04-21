@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 import olpcgames
 import pygame
@@ -11,9 +11,9 @@ from sugar.graphics.toolbutton import ToolButton
 from gettext import gettext as _
 
 
-class PacmanActivity(olpcgames.PyGameActivity):
-    game_name = 'MainGame'
-    game_title = _('Cuidarme')
+class Cuidarme2Activity(olpcgames.PyGameActivity):
+    game_name = 'Juego'
+    game_title = _('Cuidarme 2')
     game_size = None
 
     def build_toolbar(self):

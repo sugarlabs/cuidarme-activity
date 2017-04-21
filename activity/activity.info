@@ -1,9 +1,9 @@
 [Activity]
 name = Cuidarme
-exec = sugar-activity activity.PacmanActivity
+exec = sugar-activity activity.Cuidarme2Activity
 icon = AppIcon
-activity_version   = 1
+activity_version  = 2
 show_launcher = yes
 host_version = 1
-license = Commercial
+license = GPL v2
 bundle_id = com.colombiagames.olpc.cuidarme
