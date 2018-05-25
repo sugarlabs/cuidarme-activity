@@ -1,13 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
 import olpcgames
-import pygame
 import gtk
 
 from sugar.activity.widgets import ActivityToolbarButton
 from sugar.activity.widgets import StopButton
 from sugar.graphics.toolbarbox import ToolbarBox
-from sugar.graphics.toolbutton import ToolButton
 from gettext import gettext as _
 
 
