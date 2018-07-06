@@ -43,12 +43,12 @@ Note:
     PangoFont -- is the Pango-specific rendering engine which allows
         for the more involved cross-lingual rendering operations.
 """
-import pango
+from gi.repository import Pango
 import logging
 import pangocairo
 import pygame.rect
 import pygame.image
-import gtk
+from gi.repository import Gtk
 from olpcgames import _cairoimage
 
 log = logging.getLogger('olpcgames.pangofont')
@@ -77,16 +77,16 @@ class PangoFont(object):
         STYLE_* -- parameters for use with set_style
 
     """
-    WEIGHT_BOLD = pango.WEIGHT_BOLD
-    WEIGHT_HEAVY = pango.WEIGHT_HEAVY
-    WEIGHT_LIGHT = pango.WEIGHT_LIGHT
-    WEIGHT_NORMAL = pango.WEIGHT_NORMAL
-    WEIGHT_SEMIBOLD = pango.WEIGHT_SEMIBOLD
-    WEIGHT_ULTRABOLD = pango.WEIGHT_ULTRABOLD
-    WEIGHT_ULTRALIGHT = pango.WEIGHT_ULTRALIGHT
-    STYLE_NORMAL = pango.STYLE_NORMAL
-    STYLE_ITALIC = pango.STYLE_ITALIC
-    STYLE_OBLIQUE = pango.STYLE_OBLIQUE
+    WEIGHT_BOLD = Pango.Weight.BOLD
+    WEIGHT_HEAVY = Pango.Weight.HEAVY
+    WEIGHT_LIGHT = Pango.Weight.LIGHT
+    WEIGHT_NORMAL = Pango.Weight.NORMAL
+    WEIGHT_SEMIBOLD = Pango.Weight.SEMIBOLD
+    WEIGHT_ULTRABOLD = Pango.Weight.ULTRABOLD
+    WEIGHT_ULTRALIGHT = Pango.Weight.ULTRALIGHT
+    STYLE_NORMAL = Pango.Style.NORMAL
+    STYLE_ITALIC = Pango.Style.ITALIC
+    STYLE_OBLIQUE = Pango.Style.OBLIQUE
 
     def __init__(
             self,
@@ -96,14 +96,14 @@ class PangoFont(object):
             italic=False,
             underline=False,
             fd=None):
-        """If you know what pango.FontDescription (fd) you want, pass it in as
+        """If you know what Pango.FontDescription (fd) you want, pass it in as
         'fd'.  Otherwise, specify any number of family, __size, bold, or italic,
         and we will try to match something up for you."""
 
         # Always set the FontDescription (FIXME - only set it if the user wants
         # to change something?)
         if fd is None:
-            fd = pango.FontDescription()
+            fd = Pango.FontDescription()
             if family is not None:
                 fd.set_family(family)
             if size is not None:
@@ -198,7 +198,7 @@ class PangoFont(object):
 
     def get_bold(self):
         """Return whether our __font's weight is bold (or above)"""
-        return self.fd.get_weight() >= pango.WEIGHT_BOLD
+        return self.fd.get_weight() >= Pango.Weight.BOLD
 
     def set_italic(self, italic=True):
         """Set our "italic" value (style)"""
@@ -231,13 +231,13 @@ class PangoFont(object):
     def _createLayout(self, text):
         """Produces a Pango layout describing this text in this __font"""
         # create layout
-        layout = pango.Layout(gtk.gdk.pango_context_get())
+        layout = Pango.Layout(Gdk.pango_context_get())
         layout.set_font_description(self.fd)
         if self.underline:
             attrs = layout.get_attributes()
             if not attrs:
-                attrs = pango.AttrList()
-            attrs.insert(pango.AttrUnderline(pango.UNDERLINE_SINGLE, 0, 32767))
+                attrs = Pango.AttrList()
+            attrs.insert(Pango.AttrUnderline(Pango.Underline.SINGLE, 0, 32767))
             layout.set_attributes(attrs)
         layout.set_text(text)
         return layout
@@ -256,7 +256,7 @@ class PangoFont(object):
 ##        """Determine inter-line spacing for the __font"""
 ##        __font = self.get_context().load_font( self.fd )
 ##        metrics = __font.get_metrics()
-# return pango.PIXELS( metrics.get_ascent() )
+# return Pango.PIXELS( metrics.get_ascent() )
 # def get_height( self ):
 # def get_ascent( self ):
 # def get_descent( self ):
@@ -267,12 +267,12 @@ class SysFont(PangoFont):
     bold, and italic designation. Similar to SysFont from Pygame."""
 
     def __init__(self, name, size, bold=False, italic=False):
-        fd = pango.FontDescription(name)
-        fd.set_absolute_size(size * pango.SCALE)
+        fd = Pango.FontDescription(name)
+        fd.set_absolute_size(size * Pango.SCALE)
         if bold:
-            fd.set_weight(pango.WEIGHT_BOLD)
+            fd.set_weight(Pango.Weight.BOLD)
         if italic:
-            fd.set_style(pango.STYLE_OBLIQUE)
+            fd.set_style(Pango.Style.OBLIQUE)
         super(SysFont, self).__init__(fd=fd)
 
 
@@ -290,9 +290,9 @@ def fontByDesc(desc="", bold=False, italic=False):
     """Constructs a FontDescription from the given string representation.
 
 The format of the fontByDesc string representation is passed directly
-to the pango.FontDescription constructor and documented at:
+to the Pango.FontDescription constructor and documented at:
 
-    http://www.pygtk.org/docs/pygtk/class-pangofontdescription.html#constructor-pangofontdescription
+    http://www.pyGtk.org/docs/pygtk/class-pangofontdescription.html#constructor-pangofontdescription
 
 Bold and italic are provided as a convenience.
 
@@ -334,11 +334,11 @@ Expanded
 Extra-Expanded
 Ultra-Expanded	the widest width
     """
-    fd = pango.FontDescription(name)
+    fd = Pango.FontDescription(name)
     if bold:
-        fd.set_weight(pango.WEIGHT_BOLD)
+        fd.set_weight(Pango.Weight.BOLD)
     if italic:
-        fd.set_style(pango.STYLE_OBLIQUE)
+        fd.set_style(Pango.Style.OBLIQUE)
     return PangoFont(fd=fd)
 
 

@@ -25,14 +25,14 @@ logging.root.setLevel(logging.WARN)
 log = logging.getLogger('olpcgames.activity')
 ##log.setLevel( logging.DEBUG )
 
-import pygtk
-pygtk.require('2.0')
-import gtk
-import gtk.gdk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import Gdk
 import os
 
-from sugar.activity import activity
-from sugar.graphics import style
+from sugar3.activity import activity
+from sugar3.graphics import style
 from olpcgames.canvas import PygameCanvas
 from olpcgames import mesh, util
 
@@ -57,7 +57,7 @@ class PygameActivity(activity.Activity):
             changed.
 
             If None, use the bulk of the screen for the Pygame surface based on
-            the values reported by the gtk.gdk functions.  Note that None is
+            the values reported by the Gtk.gdk functions.  Note that None is
             *not* the default value.
 
         game_title -- title to be displayed in the Sugar Shell UI
@@ -97,7 +97,7 @@ class PygameActivity(activity.Activity):
         super(PygameActivity, self).__init__(handle)
         self.make_global()
         if self.game_size is None:
-            width, height = gtk.gdk.screen_width(), gtk.gdk.screen_height()
+            width, height = Gdk.Screen.width(), Gdk.Screen.height()
             log.info('Total screen size: %s %s', width, height)
             # for now just fudge the toolbar size...
             self.game_size = width, height - (1 * style.GRID_CELL_SIZE)
@@ -156,7 +156,7 @@ class PygameActivity(activity.Activity):
             # launched from Neighborhood)
             joined_cb()
 
-        toolbar.title.unset_flags(gtk.CAN_FOCUS)
+        toolbar.title.unset_flags(Gtk.CAN_FOCUS)
         return toolbar
 
     PYGAME_CANVAS_CLASS = PygameCanvas
@@ -172,12 +172,12 @@ class PygameActivity(activity.Activity):
             self._pgc.connect_game(self.game_handler or self.game_name)
             # XXX Bad coder, do not hide in a widely subclassed operation
             # map signal does not appear to show up on socket instances
-            gtk.gdk.threads_init()
+            Gdk.threads_init()
             return self._pgc
         else:
-            import hippo
-            self._drawarea = gtk.DrawingArea()
-            canvas = hippo.Canvas()
+            from gi.repository import Hippo
+            self._drawarea = Gtk.DrawingArea()
+            canvas = Hippo.Canvas()
             canvas.grab_focus()
             self.set_canvas(canvas)
             self.show_all()

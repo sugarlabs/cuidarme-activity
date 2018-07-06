@@ -51,7 +51,9 @@ class Juego():
         self.__sendBatchThread = None
         self.__sendBatchInProgress = False
 
-        self.window = pygame.display.set_mode((1200, 825), 0, 0)
+        info = pygame.display.Info()
+        screen_width,screen_height = info.current_w,info.current_h
+        self.window = pygame.display.set_mode((screen_width,screen_height-50))
         pygame.display.set_caption("Cuidarme")
 
         Globals.screen = pygame.display.get_surface()
