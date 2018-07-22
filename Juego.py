@@ -14,8 +14,6 @@ import olpcgames
 import datetime
 import urllib
 import threading
-#import gc
-# gc.enable()
 
 
 class Juego():
@@ -52,8 +50,8 @@ class Juego():
         self.__sendBatchInProgress = False
 
         info = pygame.display.Info()
-        screen_width,screen_height = info.current_w,info.current_h
-        self.window = pygame.display.set_mode((screen_width,screen_height-50))
+        screen_width, screen_height = info.current_w, info.current_h
+        self.window = pygame.display.set_mode((screen_width, screen_height-50))
         pygame.display.set_caption("Cuidarme")
 
         Globals.screen = pygame.display.get_surface()
@@ -76,7 +74,6 @@ class Juego():
             "res/sprite/AnswerB_Off.png").convert_alpha()
         self.btn_c1 = pygame.image.load(
             "res/sprite/AnswerC_Off.png").convert_alpha()
-        # self.__backgroundTransparent = pygame.image.load("res/backgrounds/0.png").convert()
         self.backgroundQuestion = pygame.image.load(
             "res/backgrounds/Question.png").convert_alpha()
         self.ghostNormalFrame = pygame.image.load(
@@ -87,11 +84,14 @@ class Juego():
             "res/sprite/clockBack.png").convert_alpha()
         self.clockImg = pygame.image.load(
             "res/sprite/ClockBig.png").convert_alpha()
-        #self.timeOverImg = pygame.image.load("res/sprite/timeOver.png").convert_alpha()
+        # self.timeOverImg = pygame.image.load(
+        #   "res/sprite/timeOver.png").convert_alpha()
         self.tryAgainImg = pygame.image.load(
             "res/sprite/MessageTryAgain.png").convert_alpha()
-        #self.winImg = pygame.image.load("res/sprite/mensaje_felicidades.png").convert_alpha()
-        #self.popup = pygame.image.load("res/backgrounds/fondo_caritas.png").convert_alpha()
+        # self.winImg = pygame.image.load(
+        #   "res/sprite/mensaje_felicidades.png").convert_alpha()
+        # self.popup = pygame.image.load(
+        #   "res/backgrounds/fondo_caritas.png").convert_alpha()
         self.buttonUp = pygame.image.load(
             "res/sprite/boton_normal.png").convert_alpha()
         self.buttonDown = pygame.image.load(
@@ -180,7 +180,7 @@ class Juego():
             except BaseException:
                 pass
 
-        # # Verificamos que los datos persistidos hayan sido leidos correctamente
+        # Verificamos que los datos persistidos hayan sido leidos correctamente
         if (
             persistedRootUserId is None) or (
             persistedRootUserId == "") or (
@@ -207,7 +207,8 @@ class Juego():
         if not self.__dataProcessDefined:
 
             # Obtenemos la hora de finalizacion de la sesion de juego
-            Globals.INFO_FINISH_TIME = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+            Globals.INFO_FINISH_TIME = datetime.datetime.now().strftime(
+                                        "%d-%m-%Y %H:%M:%S")
 
             try:
                 # Almacenamos la informacion de la sesion de juego recien
@@ -300,22 +301,26 @@ class Juego():
                         index = index + 1
 
                     elif index == 1:  # Leaf User Id
-                        batchDataToSend = batchDataToSend + '''
-							{ "leafUserId": "''' + currentLine[11:len(currentLine) - 1] + '''", '''
+                        batchDataToSend = batchDataToSend + \
+                            '''{ "leafUserId": "''' + \
+                            currentLine[11:len(currentLine) - 1] + '''", '''
                         index = index + 1
 
                     elif index == 2:  # Start Datetime
-                        batchDataToSend = batchDataToSend + '''"startDatetime": "''' + \
+                        batchDataToSend = batchDataToSend + \
+                            '''"startDatetime": "''' + \
                             currentLine[14:len(currentLine) - 1] + '''", '''
                         index = index + 1
 
                     elif index == 3:  # Finish Datetime
-                        batchDataToSend = batchDataToSend + '''"finishDatetime": "''' + \
+                        batchDataToSend = batchDataToSend + \
+                            '''"finishDatetime": "''' + \
                             currentLine[15:len(currentLine) - 1] + '''", '''
                         index = index + 1
 
                     elif index == 4:  # Stars
-                        batchDataToSend = batchDataToSend + '''"stars": "''' + \
+                        batchDataToSend = batchDataToSend + \
+                            '''"stars": "''' + \
                             currentLine[6:len(currentLine) - 1] + '''"}'''
                         index = 0
 
@@ -324,12 +329,12 @@ class Juego():
                     # Parametros de conexion
                     url = 'http://www.transformando.gov.co/api/public/index/batch'
                     jsonParameters = '''
-					{
-						"gameId": "2",
-						"rootUserId": "''' + str(Globals.INFO_ROOT_USER_ID) + '''",
-						"data": [''' + batchDataToSend + '''
-						]
-					}'''
+                                        {
+                                        "gameId": "2",
+                                        "rootUserId": "''' + str(Globals.INFO_ROOT_USER_ID) + '''",
+                                        "data": [''' + batchDataToSend + '''
+                                        ]
+                                        }'''
                     parameters = urllib.urlencode({'data': jsonParameters})
                     # Hacemos la solicitud por POST
                     self.__sendBatchThread = ConnectionController(
@@ -393,7 +398,8 @@ class Juego():
         # Ya se definio la situacion del batch de datos, ya puede comenzar el
         # proceso de cerrado
         else:
-            # Conteo para evitar Race Conditions y permitir el almacenamiento persistente
+            # Conteo para evitar Race Conditions y
+            # permitir el almacenamiento persistente
             # self.__count = self.__count + 1
 
             # if self.__count >= self.__endTime:
@@ -445,7 +451,8 @@ class Juego():
             self.illustrated = self.checkIfIllustrated()
             if (self.illustrated[0] > 0):
                 self.questionImg = pygame.image.load(
-                    "res/sprite/p" + str(self.illustrated[0]) + ".png").convert_alpha()
+                    "res/sprite/p" + str(
+                        self.illustrated[0]) + ".png").convert_alpha()
             else:
                 self.questionImg = pygame.image.load(
                     "res/sprite/pregunta.png").convert_alpha()
@@ -479,7 +486,8 @@ class Juego():
         if (Globals.thisLevel.answers[Globals.questionId][value][1] == 1):
             # respuesta correcta
             self.dyingPos = (
-                Globals.ghosts[Globals.questionId].x + 25, Globals.ghosts[Globals.questionId].y)
+                Globals.ghosts[Globals.questionId].x + 25,
+                                Globals.ghosts[Globals.questionId].y)
             del Globals.ghosts[Globals.questionId]
             self.dialog = 0
             Globals.thisGame.AddToScore(25)
@@ -505,8 +513,9 @@ class Juego():
             Globals.thisGame.SetMode(6)
 
             # modo rapido para pruebas
-            #ranwin = random.randint(1,7)
-            #self.winImg = pygame.image.load("res/sprite/congrats"+str(ranwin)+".png").convert_alpha()
+            # ranwin = random.randint(1,7)
+            # self.winImg = pygame.image.load(
+            # "res/sprite/congrats"+str(ranwin)+".png").convert_alpha()
             # Globals.thisGame.SetMode(7)
 
     def showEmotionTrivia(self):
@@ -542,12 +551,14 @@ class Juego():
                         self.emotionSelected = 18
                 elif event.key == pygame.K_KP1 or event.key == pygame.K_RETURN:
                     self.buttonstate = self.buttonDown
-                    if self.emotionSelected == data.emotions[Globals.emotionnum][1]:
+                    if self.emotionSelected == data.emotions[
+                                                Globals.emotionnum][1]:
                         del self.popup
                         Globals.thisGame.modeTimer = 0
                         ranwin = random.randint(1, 7)
                         self.winImg = pygame.image.load(
-                            "res/sprite/congrats" + str(ranwin) + ".png").convert_alpha()
+                            "res/sprite/congrats" + str(ranwin) +
+                            ".png").convert_alpha()
                         Globals.thisGame.SetMode(7)
                     else:
                         self.errorSound.play()
@@ -561,8 +572,8 @@ class Juego():
 
         if Globals.thisGame.mode == 1 and self.dialog == 0:
             (xPos, yPos) = pygame.mouse.get_pos()
-            if (xPos >= 1200 - 87) and (xPos <=
-                                        1200) and (yPos >= 0) and (yPos <= 0 + 74):
+            if ((xPos >= 1200 - 87) and (xPos <= 1200) and
+                    (yPos >= 0) and (yPos <= 0 + 74)):
                 Globals.thisGame.SetMode(10)
             if pygame.key.get_pressed()[
                     pygame.K_KP6] or pygame.key.get_pressed()[
@@ -570,15 +581,18 @@ class Juego():
                 Globals.player.velX = Globals.player.speed
                 Globals.player.velY = 0
 
-            elif pygame.key.get_pressed()[pygame.K_KP4] or pygame.key.get_pressed()[pygame.K_LEFT]:
+            elif (pygame.key.get_pressed()[pygame.K_KP4] or
+                    pygame.key.get_pressed()[pygame.K_LEFT]):
                 Globals.player.velX = -Globals.player.speed
                 Globals.player.velY = 0
 
-            elif pygame.key.get_pressed()[pygame.K_KP2] or pygame.key.get_pressed()[pygame.K_DOWN]:
+            elif (pygame.key.get_pressed()[pygame.K_KP2] or
+                    pygame.key.get_pressed()[pygame.K_DOWN]):
                 Globals.player.velX = 0
                 Globals.player.velY = Globals.player.speed
 
-            elif pygame.key.get_pressed()[pygame.K_KP8] or pygame.key.get_pressed()[pygame.K_UP]:
+            elif (pygame.key.get_pressed()[pygame.K_KP8] or
+                    pygame.key.get_pressed()[pygame.K_UP]):
                 Globals.player.velX = 0
                 Globals.player.velY = -Globals.player.speed
 
@@ -600,7 +614,7 @@ class Juego():
 
     def gameOver(self):
         print "gameover called"
-        #self.timeOver = 1
+        # self.timeOver = 1
         self.timeOverImg = pygame.image.load(
             "res/sprite/timeOver.png").convert_alpha()
         Globals.thisGame.modeTimer = 0
@@ -661,9 +675,9 @@ class Juego():
             Globals.thisGame.levelNum = random.randint(2, 10)
         else:
             Globals.thisGame.levelNum = random.randint(1, 10)
-            #Globals.playerSpeed = 18
-            #Globals.ghostSpeed = 18
-            #Globals.player.speed = Globals.playerSpeed
+            # Globals.playerSpeed = 18
+            # Globals.ghostSpeed = 18
+            # Globals.player.speed = Globals.playerSpeed
         Globals.levelBoot = Globals.thisGame.levelNum
         Globals.thisLevel = Level()
         Globals.thisGame.StartNewGame(Globals.thisGame.levelNum)
