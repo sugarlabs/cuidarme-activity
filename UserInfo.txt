@@ -1,8 +1,0 @@
-rootUserId:None
-username:None
-password:None
----------------
-leafUserId:None
-startDatetime:None
-finishDatetime:22-07-2018 20:15:11
-stars:0

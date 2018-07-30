@@ -692,6 +692,13 @@ class Juego():
         pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play(-1)
 
+        if not os.path.exists(os.getcwd() + '/UserInfo.txt'):
+            f = open("UserInfo.txt", "w+")
+            f.write("rootUserId:None\n")
+            f.write("Username:None\n")
+            f.write("password:None\n")
+            f.close()
+
         self.ghostDieAnim = {}
         for i in range(1, 11, 1):
             self.ghostDieAnim[i] = pygame.image.load(
