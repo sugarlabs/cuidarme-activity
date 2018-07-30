@@ -137,8 +137,7 @@ class PygameCanvas(Gtk.Layout):
                 from olpcgames import eventwrap
                 eventwrap.clear()
         finally:
-            log.info('Main function finished, calling main_quit')
-            Gtk.main_quit()
+            pass
 
     source_object_id = None
 

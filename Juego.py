@@ -921,16 +921,7 @@ class Juego():
 
             # mode10 : secuencia de salida del juego
             elif Globals.thisGame.mode == 10:
-                for event in pygame.event.get():
-                    if event.type == QUIT:
-                        pass
-                if Globals.thisGame.modeTimer == 0:
-                    Globals.img_Background = pygame.image.load(
-                        "res/backgrounds/Splash_final.png")
-                    draw(Globals.img_Background, (0, 0))
-                    self.savePersistence()
-                elif Globals.thisGame.modeTimer == 150:
-                    sys.exit(0)
+                sys.exit(0)
 
             # mode12 : modo de pantalla de login o registro
             elif Globals.thisGame.mode == 12:
