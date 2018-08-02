@@ -121,7 +121,7 @@ log = logging.getLogger('olpcgames.mesh')
 import olpcgames
 from olpcgames.util import get_traceback
 try:
-    from sugar.presence.tubeconn import TubeConnection
+    from sugar3.presence.tubeconn import TubeConnection
 except ImportError as err:
     TubeConnection = object
 try:
@@ -136,7 +136,7 @@ except ImportError as err:
     telepathy = None
 
 try:
-    import sugar.presence.presenceservice
+    import sugar3.presence.presenceservice
 except Exception as err:
     pass
 import pygame.event as PEvent
@@ -263,7 +263,7 @@ def _setup(activity):
     '''Determines text and tube channels for the current Activity. If no tube
 channel present, creates one. Updates text_chan and tubes_chan.
 
-setup(sugar.activity.Activity, telepathy.client.Connection)'''
+setup(sugar3.activity.Activity, telepathy.client.Connection)'''
     global text_chan, tubes_chan, DBUS_SERVICE
     log.info('Setup for %s', activity)
     if not DBUS_SERVICE:
@@ -435,10 +435,10 @@ def _get_presence_service():
     The presence service, when offline, has no preferred connection type,
     so we check that before returning the object...
     """
-    log.debug("""About to import sugar.presence.presenceservice""")
+    log.debug("""About to import sugar3.presence.presenceservice""")
     try:
         log.debug('About to retrieve presence service instance')
-        pservice = sugar.presence.presenceservice.get_instance()
+        pservice = sugar3.presence.presenceservice.get_instance()
         try:
             log.debug('  Retrieved presence service instance: %s', pservice)
             name, path = pservice.get_preferred_connection()

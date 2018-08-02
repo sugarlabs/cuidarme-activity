@@ -35,11 +35,11 @@ class _TrackLoop(object):
 
     def loop(self):
         """Little thread loop that replicates the gtk mainloop"""
-        import gtk
+        from gi.repository import Gtk
         while self.count >= 1:
             log.debug('GTK loop restarting')
-            while gtk.events_pending():
-                gtk.main_iteration()
+            while Gtk.events_pending():
+                Gtk.main_iteration()
         log.debug('GTK loop exiting')
         try:
             del self.t_loop

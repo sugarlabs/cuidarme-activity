@@ -49,7 +49,7 @@ class SVGSprite(sprite.Sprite):
     def _render(self, width, height):
         """Render our SVG to a Pygame image"""
         import rsvg
-        handle = rsvg.Handle(data=self.svg)
+        handle = Rsvg.Handle.new_from_data(self.svg)
         scale = 1.0
         hw, hh = handle.get_dimension_data()[:2]
         if hw and hh:

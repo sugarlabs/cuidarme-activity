@@ -11,13 +11,13 @@ import os
 import pygame
 import olpcgames
 
-import pygtk
-pygtk.require('2.0')
-import gtk
-import gst
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import Gst
 
 
-class VideoWidget(gtk.DrawingArea):
+class VideoWidget(Gtk.DrawingArea):
     """Widget to render GStreamer video over our Pygame Canvas
 
     The VideoWidget is a simple GTK window which is
@@ -41,7 +41,7 @@ class VideoWidget(gtk.DrawingArea):
 
     def __init__(self, rect=None, force_aspect_ratio=True):
         super(VideoWidget, self).__init__()
-        self.unset_flags(gtk.DOUBLE_BUFFERED)
+        self.unset_flags(Gtk.DOUBLE_BUFFERED)
         if rect is None:
             rect = pygame.Rect((0, 0), (160, 120))
         self.rect = rect
@@ -109,7 +109,7 @@ class Player(object):
         self._playing = False
         self._videowidget = videowidget
 
-        self._pipeline = gst.parse_launch(pipe_desc)
+        self._pipeline = Gst.parse_launch(pipe_desc)
 
         bus = self._pipeline.get_bus()
         bus.enable_sync_message_emission()
@@ -120,7 +120,7 @@ class Player(object):
     def play(self):
         log.info('Play')
         if not self._playing:
-            self._pipeline.set_state(gst.STATE_PLAYING)
+            self._pipeline.set_state(Gst.State.PLAYING)
             self._playing = True
 
     def pause(self):
@@ -128,12 +128,12 @@ class Player(object):
         if self._playing:
             if self._synchronized:
                 log.debug('  pause already sync\'d')
-                self._pipeline.set_state(gst.STATE_PAUSED)
+                self._pipeline.set_state(Gst.State.PAUSED)
             self._playing = False
 
     def stop(self):
         """Stop all playback"""
-        self._pipeline.set_state(gst.STATE_NULL)
+        self._pipeline.set_state(Gst.State.NULL)
 
     def on_sync_message(self, bus, message):
         log.info('Sync: %s', message)
@@ -146,7 +146,7 @@ class Player(object):
     def on_message(self, bus, message):
         log.info('Message: %s', message)
         t = message.type
-        if t == gst.MESSAGE_ERROR:
+        if t == Gst.MessageType.ERROR:
             err, debug = message.parse_error()
             log.warn("Video error: (%s) %s", err, debug)
             self._playing = False

@@ -5,9 +5,9 @@ log = logging.getLogger('olpcgames.canvas')
 log.setLevel(logging.DEBUG)
 import threading
 
-import pygtk
-pygtk.require('2.0')
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 import pygame
 
 from olpcgames import gtkEvent, util
@@ -15,7 +15,7 @@ from olpcgames import gtkEvent, util
 __all__ = ['PygameCanvas']
 
 
-class PygameCanvas(gtk.Layout):
+class PygameCanvas(Gtk.Layout):
     """Canvas providing bridge methods to run Pygame in GTK
 
     The PygameCanvas creates a secondary thread in which the Pygame instance will
@@ -39,12 +39,12 @@ class PygameCanvas(gtk.Layout):
         # Build the main widget
         log.info('Creating the pygame canvas')
         super(PygameCanvas, self).__init__()
-        self.set_flags(gtk.CAN_FOCUS)
+        self.set_can_focus(True)
 
         # Build the sub-widgets
-        self._align = gtk.Alignment(0.5, 0.5)
-        self._inner_evb = gtk.EventBox()
-        self._socket = gtk.Socket()
+        self._align = Gtk.Alignment.new(0.5, 0.5, 0, 0)
+        self._inner_evb = Gtk.EventBox()
+        self._socket = Gtk.Socket()
 
         # Add internal widgets
         self._inner_evb.set_size_request(width, height)
@@ -109,13 +109,13 @@ class PygameCanvas(gtk.Layout):
         import olpcgames
         olpcgames.widget = olpcgames.WIDGET = self
         try:
-            import sugar.activity.activity
+            import sugar3.activity.activity
             import os
         except ImportError as err:
             log.info("""Running outside Sugar""")
         else:
             try:
-                os.chdir(sugar.activity.activity.get_bundle_path())
+                os.chdir(sugar3.activity.activity.get_bundle_path())
             except KeyError as err:
                 pass
 
@@ -137,8 +137,7 @@ class PygameCanvas(gtk.Layout):
                 from olpcgames import eventwrap
                 eventwrap.clear()
         finally:
-            log.info('Main function finished, calling main_quit')
-            gtk.main_quit()
+            pass
 
     source_object_id = None
 
@@ -146,9 +145,9 @@ class PygameCanvas(gtk.Layout):
         """Implement the 'view source' key by saving
         datastore, and then telling the Journal to view it."""
         if self.source_object_id is None:
-            from sugar import profile
-            from sugar.datastore import datastore
-            from sugar.activity.activity import get_bundle_name, get_bundle_path
+            from sugar3 import profile
+            from sugar3.datastore import datastore
+            from sugar3.activity.activity import get_bundle_name, get_bundle_path
             from gettext import gettext as _
             import os.path
             jobject = datastore.create()
@@ -168,10 +167,10 @@ class PygameCanvas(gtk.Layout):
         self.journal_show_object(self.__source_object_id)
 
     def journal_show_object(self, object_id):
-        """Invoke journal_show_object from sugar.activity.activity if it
+        """Invoke journal_show_object from sugar3.activity.activity if it
         exists."""
         try:
-            from sugar.activity.activity import show_object_in_journal
+            from sugar3.activity.activity import show_object_in_journal
             show_object_in_journal(object_id)
         except ImportError:
-            pass  # no love from sugar.
+            pass  # no love from sugar3.

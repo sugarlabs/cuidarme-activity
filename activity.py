@@ -1,11 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
 import olpcgames
-import gtk
+from gi.repository import Gtk
 
-from sugar.activity.widgets import ActivityToolbarButton
-from sugar.activity.widgets import StopButton
-from sugar.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbarbox import ToolbarBox
 from gettext import gettext as _
 
 
@@ -21,11 +21,11 @@ class Cuidarme2Activity(olpcgames.PyGameActivity):
         toolbar_box.toolbar.insert(activity_button, 0)
         activity_button.show()
 
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         toolbar_box.toolbar.insert(separator, -1)
         separator.show()
 
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_size_request(0, -1)
         separator.set_expand(True)

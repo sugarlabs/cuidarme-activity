@@ -1,4 +1,0 @@
-include *.*
-recursive-include activity *.*
-recursive-include olpcgames *.*
-recursive-include res *.*
