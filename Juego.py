@@ -12,7 +12,7 @@ from pygame.locals import *
 from threading import Timer
 import olpcgames
 import datetime
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import threading
 
 
@@ -335,7 +335,7 @@ class Juego():
                                         "data": [''' + batchDataToSend + '''
                                         ]
                                         }'''
-                    parameters = urllib.urlencode({'data': jsonParameters})
+                    parameters = urllib.parse.urlencode({'data': jsonParameters})
                     # Hacemos la solicitud por POST
                     self.__sendBatchThread = ConnectionController(
                         1, url, parameters)
@@ -613,7 +613,7 @@ class Juego():
         self.turnNormal()
 
     def gameOver(self):
-        print "gameover called"
+        print("gameover called")
         # self.timeOver = 1
         self.timeOverImg = pygame.image.load(
             "res/sprite/timeOver.png").convert_alpha()
@@ -623,13 +623,13 @@ class Juego():
     def turnNormal(self):
         Globals.player.state = 1
         Globals.player.speed = Globals.playerSpeed
-        for k, item in Globals.ghosts.items():
+        for k, item in list(Globals.ghosts.items()):
             item.anim[2] = self.ghostNormalFrame
 
     def turnVulnerable(self):
         Globals.player.state = 2
         Globals.player.speed = Globals.playerSpeed + 3
-        for k, item in Globals.ghosts.items():
+        for k, item in list(Globals.ghosts.items()):
             item.anim[2] = self.ghostVulnerableFrame
 
     def restorePowerups(self):
@@ -747,7 +747,7 @@ class Juego():
                             self.turnVulnerable()
                             break
 
-                    for k, item in Globals.ghosts.items():
+                    for k, item in list(Globals.ghosts.items()):
                         if Globals.thisLevel.CheckIfHit(
                                 (Globals.player.x, Globals.player.y), (item.x, item.y), (50, 90)):
                             if Globals.player.state == 2:
@@ -767,7 +767,7 @@ class Juego():
                                 Globals.thisLevel.Restart()
                                 self.tryAgain = 1
                     Globals.player.Draw()
-                    for k, item in Globals.ghosts.items():
+                    for k, item in list(Globals.ghosts.items()):
                         item.Move()
                     if self.PUtimer > 0:
                         self.PUtimer += 1
@@ -789,7 +789,7 @@ class Juego():
                     Globals.thisGame.SmartMoveScreen()
                     Globals.thisLevel.drawItems()
                     self.drawPowerups()
-                    for k, item in Globals.ghosts.items():
+                    for k, item in list(Globals.ghosts.items()):
                         item.Draw()
                     if self.tryAgain:
                         draw(self.tryAgainImg, (229, 250))
@@ -948,7 +948,7 @@ class Text:
         self.__positionY = ly
 
     def doPaint(self):
-        text = unicode(self.__text, "UTF-8")
+        text = str(self.__text, "UTF-8")
         draw(self.__font.render(text, 1, self.__color),
              (self.__positionX, self.__positionY))
 
@@ -1061,7 +1061,7 @@ class Label:
 
     def doPaint(self):
         if self.text != "":
-            text = unicode(self.text, "UTF-8")
+            text = str(self.text, "UTF-8")
             renderedText = self.__font.render(text, 1, self.__color)
             draw(renderedText, (self.__positionXY[0], self.__positionXY[1]))
 
@@ -1448,7 +1448,7 @@ class Level:
         # poner los fantasmas en las posiciones posibles
         pos = len(self.ghostsPositions)
 
-        for g, item in Globals.ghosts.items():
+        for g, item in list(Globals.ghosts.items()):
             pos -= 1
             if pos < 0:
                 pos = len(self.ghostsPositions) - 1
@@ -1459,7 +1459,7 @@ class Level:
         self.Restart()
 
     def Restart(self):
-        for k, item in Globals.ghosts.items():
+        for k, item in list(Globals.ghosts.items()):
             item.x = item.homeX
             item.y = item.homeY
             item.velX = 0
@@ -2323,7 +2323,7 @@ class ScreenRegistration:
 								"degree": "''' + grade + '''"
 							}
 						}'''
-                        parameters = urllib.urlencode({'data': jsonParameters})
+                        parameters = urllib.parse.urlencode({'data': jsonParameters})
 
                         # Hacemos la solicitud por POST
                         self.__registrationThread = ConnectionController(
@@ -2377,7 +2377,7 @@ class ScreenRegistration:
 
                         # Parametros de conexion
                         url = 'http://www.transformando.gov.co/api/public/index/checkuser'
-                        parameters = urllib.urlencode(
+                        parameters = urllib.parse.urlencode(
                             {'user': username, 'pass': password})
 
                         # Hacemos la solicitud por POST
@@ -2436,7 +2436,7 @@ class ConnectionController(threading.Thread):
         if self.__method == 1:
 
             try:
-                self.__result = urllib.urlopen(
+                self.__result = urllib.request.urlopen(
                     self.__url, self.__parameters).read()
                 self.__state = 2
             except BaseException:
