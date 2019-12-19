@@ -948,7 +948,7 @@ class Text:
         self.__positionY = ly
 
     def doPaint(self):
-        text = str(b'self.__text', "UTF-8")
+        text = str(self.__text.encode(), "UTF-8")
         draw(self.__font.render(text, 1, self.__color),
              (self.__positionX, self.__positionY))
 
