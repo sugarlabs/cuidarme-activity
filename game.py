@@ -105,4 +105,4 @@ class game ():
     def SetMode(self, newMode):
         self.mode = newMode
         self.modeTimer = 0
-        print " ***** GAME MODE IS NOW ***** " + str(newMode)
+        print(" ***** GAME MODE IS NOW ***** " + str(newMode))

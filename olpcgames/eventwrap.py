@@ -19,8 +19,8 @@ Extensions:
         release a few more resources, then a bit more...
 """
 import pygame
-import Queue
-import thread
+import queue
+import _thread
 import threading
 import logging
 from olpcgames import util
@@ -46,7 +46,7 @@ class Event(object):
 
     def __repr__(self):
         result = []
-        for key, value in self.__dict__.items():
+        for key, value in list(self.__dict__.items()):
             if not key.startswith('_'):
                 result.append('%s = %r' % (key, value))
         return '%s( %s, %s )' % (
@@ -162,7 +162,7 @@ def install():
 # Event queue:
 
 
-class _FilterQueue(Queue.Queue):
+class _FilterQueue(queue.Queue):
     """Simple Queue sub-class with a put_left method"""
 
     def get_type(self, filterFunction, block=True, timeout=None):
@@ -175,7 +175,7 @@ class _FilterQueue(Queue.Queue):
         try:
             if not block:
                 if self._empty_type(filterFunction):
-                    raise Queue.Empty
+                    raise queue.Empty
             elif timeout is None:
                 while self._empty_type(filterFunction):
                     self.not_empty.wait()
@@ -186,7 +186,7 @@ class _FilterQueue(Queue.Queue):
                 while self._empty_type(filterFunction):
                     remaining = endtime - _time()
                     if remaining <= 0.0:
-                        raise Queue.Empty
+                        raise queue.Empty
                     self.not_empty.wait(remaining)
             item = self._get_type(filterFunction)
             self.not_full.notify()
@@ -208,7 +208,7 @@ class _FilterQueue(Queue.Queue):
                 self.queue.remove(element)
                 return element
         # someone popped the event off the queue before we got to it!
-        raise Queue.Empty
+        raise queue.Empty
 
     def peek_type(self, filterFunction=lambda x: True):
         """Peek to see if we have filterFunction-matching element
@@ -228,7 +228,7 @@ g_events = _FilterQueue()
 
 # Set of blocked events as set by set
 g_blocked = set()
-g_blockedlock = thread.allocate_lock()  # should use threading instead
+g_blockedlock = _thread.allocate_lock()  # should use threading instead
 g_blockAll = False
 
 
@@ -279,7 +279,7 @@ def get(types=None):
         else:
             while True:
                 eventlist.append(g_events.get(block=False))
-    except Queue.Empty:
+    except queue.Empty:
         pass
 
     pygameEvents = pygame_get()
@@ -295,7 +295,7 @@ def poll():
     try:
         result = g_events.get(block=False)
         return _recordEvents([result])[0]
-    except Queue.Empty:
+    except queue.Empty:
         return Event(pygame.NOEVENT)
 
 
@@ -314,7 +314,7 @@ def wait(timeout=None):
             return _recordEvents([result])[0]
         except IndexError as err:
             return Event(type=pygame.NOEVENT)
-    except Queue.Empty as err:
+    except queue.Empty as err:
         return None
 
 
@@ -343,7 +343,7 @@ def clear():
         discarded = _recordEvents(discarded)
         _releaseEvents()
         return discarded
-    except Queue.Empty:
+    except queue.Empty:
         pass
 
 
@@ -408,7 +408,7 @@ def makeseq(obj):
     # Strings are the exception because you can iterate over their chars
     # -- yet, for all the purposes I've ever cared about, I want to treat
     # a string as a scalar.
-    if isinstance(obj, basestring):
+    if isinstance(obj, str):
         return (obj,)
     try:
         # Except as noted above, if you can get an iter() from an object,

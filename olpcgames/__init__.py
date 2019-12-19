@@ -81,7 +81,7 @@ widget = WIDGET = None
     CONNECT, PARTICIPANT_ADD,
     PARTICIPANT_REMOVE,
     MESSAGE_UNI, MESSAGE_MULTI,
-) = range(25, 32)
+) = list(range(25, 32))
 
 # These events use UserEvent.code, eventually *all* events should be
 # delivered as UserEvent with code set to the values defined here...
@@ -91,9 +91,8 @@ widget = WIDGET = None
     #NET_MESSAGE_UNICAST, NET_MESSAGE_MULTICAST,
     #CAMERA_LOAD, CAMERA_LOAD_FAIL,
     FILE_READ_REQUEST, FILE_WRITE_REQUEST,
-) = range(
-    2**16, 2**16 + 2,
-)
+) = list(range(
+    2**16, 2**16 + 2,))
 
 try:
     from olpcgames.activity import PygameActivity as PyGameActivity

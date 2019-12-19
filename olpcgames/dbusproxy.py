@@ -120,7 +120,7 @@ class Callback(object):
         from olpcgames import eventwrap
         args = [wrap(a) for a in args]
         named = dict([
-            (k, wrap(v)) for k, v in named.items()
+            (k, wrap(v)) for k, v in list(named.items())
         ])
         eventwrap.post(
             eventwrap.CallbackResult(

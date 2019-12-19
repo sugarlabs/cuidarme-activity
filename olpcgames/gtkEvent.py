@@ -135,7 +135,7 @@ class Translator(object):
         pygame.key.set_repeat = self._set_repeat
         pygame.mouse.get_pressed = self._get_mouse_pressed
         pygame.mouse.get_pos = self._get_mouse_pos
-        import eventwrap
+        from . import eventwrap
         eventwrap.install()
 
     def _quit(self, data=None):
@@ -170,7 +170,7 @@ class Translator(object):
     def _keymods(self):
         """Extract the keymods as they stand currently."""
         mod = 0
-        for key_val, mod_val in self.mod_map.iteritems():
+        for key_val, mod_val in self.mod_map.items():
             mod |= self.__keystate[key_val] and mod_val
         return mod
 
@@ -191,7 +191,7 @@ class Translator(object):
             # view source request, specially handled...
             self._mainwindow.view_source()
         else:
-            print 'Key %s unrecognized' % key
+            print('Key %s unrecognized' % key)
 
         if keycode is not None:
             if type == pygame.KEYDOWN:
@@ -199,10 +199,10 @@ class Translator(object):
             self.__keystate[keycode] = type == pygame.KEYDOWN
             if type == pygame.KEYUP:
                 mod = self._keymods()
-            ukey = unichr(Gdk.keyval_to_unicode(event.keyval))
+            ukey = chr(Gdk.keyval_to_unicode(event.keyval))
             if ukey == '\000':
                 ukey = ''
-            evt = eventwrap.Event(type, key=keycode, unicode=ukey, mod=mod)
+            evt = eventwrap.Event(type, key=keycode, str=ukey, mod=mod)
             assert evt.key, evt
             self._post(evt)
         return True
@@ -290,7 +290,7 @@ class Translator(object):
             eventwrap.post(evt)
         except pygame.error as e:
             if str(e) == 'Event queue full':
-                print "Event queue full!"
+                print("Event queue full!")
                 pass
             else:
                 raise e

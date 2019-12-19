@@ -12,7 +12,7 @@ import os
 def fileList(template):
     """Produce a formatted file-list for storing in a file"""
     files = FileList()
-    for line in filter(None, template.splitlines()):
+    for line in [_f for _f in template.splitlines() if _f]:
         files.process_template_line(line)
     content = '\n'.join(files.files)
     return content
