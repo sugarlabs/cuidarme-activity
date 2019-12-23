@@ -1,6 +1,6 @@
 [Activity]
 name = Cuidarme
-exec = sugar-activity activity.Cuidarme2Activity
+exec = sugar-activity3 activity.Cuidarme2Activity
 icon = AppIcon
 activity_version  = 2
 show_launcher = yes

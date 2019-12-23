@@ -43,7 +43,7 @@ def mangle_color(color):
         a = color[3]
     else:
         a = 255.0
-    return map(_fixColorBase, (r, g, b, a))
+    return list(map(_fixColorBase, (r, g, b, a)))
 
 
 def _fixColorBase(v):

@@ -1,6 +1,6 @@
 """Abstraction layer for working outside the Sugar environment"""
 import traceback
-import cStringIO
+import io
 import logging
 log = logging.getLogger('olpcgames.util')
 import os
@@ -80,7 +80,7 @@ def get_traceback(error):
         return "\n".join(error)
     else:
         exception = str(error)
-        file = cStringIO.StringIO()
+        file = io.StringIO()
         try:
             traceback.print_exc(limit=10, file=file)
             exception = file.getvalue()

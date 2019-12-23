@@ -158,7 +158,7 @@ class PygameCanvas(Gtk.Layout):
                 'icon-color': profile.get_color().to_string(),
                 'mime_type': 'text/x-python',
             }
-            for k, v in metadata.items():
+            for k, v in list(metadata.items()):
                 jobject.metadata[k] = v  # dict.update method is missing =(
             jobject.file_path = os.path.join(get_bundle_path(), 'pippy_app.py')
             datastore.write(jobject)
